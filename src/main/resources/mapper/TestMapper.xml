@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.taurus.zjbm.mapper.TestMapper">
+
+    <resultMap id="BaseResultMap" type="com.taurus.zjbm.entity.TestEntity">
+        <result column="id" property="id"/>
+        <result column="unit" property="unit"/>
+        <result column="user_id" property="userId"/>
+        <result column="create_date" property="createDate"/>
+        <result column="update_date" property="updateDate"/>
+    </resultMap>
+
+	<select id="selectById" resultType="com.taurus.zjbm.entity.TestEntity"
+		parameterType="java.lang.Long">
+		SELECT * FROM test WHERE id = #{id,jdbcType=BIGINT}
+	</select>
+    <select id="selectByIdAll" resultType="com.taurus.zjbm.entity.TestEntity">
+        SELECT * FROM test WHERE unit = #{unit} and user_id = #{userId}  limit 0,100
+    </select>
+
+    <insert id="insert" parameterType="com.taurus.zjbm.entity.TestEntity">
+		INSERT INTO test
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+        	<if test="id != null ">
+				 id,
+			</if>
+        	<if test="unit != null ">
+				 unit,
+			</if>
+        	<if test="userId != null ">
+				 user_id,
+			</if>
+        	<if test="createDate != null ">
+				 create_date,
+			</if>
+        	<if test="updateDate != null ">
+				 update_date,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+        	<if test="id != null">
+				#{id,jdbcType=BIGINT},
+			</if>
+        	<if test="unit != null">
+				#{unit,jdbcType=BIGINT},
+			</if>
+        	<if test="userId != null">
+				#{userId,jdbcType=BIGINT},
+			</if>
+        	<if test="createDate != null">
+				#{createDate,jdbcType=TIMESTAMP},
+			</if>
+        	<if test="updateDate != null">
+				#{updateDate,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+
+    <insert id="insertOrUpdate" parameterType="com.taurus.zjbm.entity.TestEntity" useGeneratedKeys="true" keyProperty="id">
+        insert into test (unit, user_id, create_date) values
+            (#{unit},#{userId},NOW())
+        on duplicate key update id=LAST_INSERT_ID(id)
+    </insert>
+
+    <update id="update" parameterType="com.taurus.zjbm.entity.TestEntity">
+		UPDATE test
+		<set>
+        	<if test="unit != null">
+				 unit = #{unit,jdbcType=BIGINT},
+			</if>
+        	<if test="userId != null">
+				 user_id = #{userId,jdbcType=BIGINT},
+			</if>
+        	<if test="createDate != null">
+				 create_date = #{createDate,jdbcType=TIMESTAMP},
+			</if>
+        	<if test="updateDate != null">
+				 update_date = #{updateDate,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		WHERE ID = #{id,jdbcType=BIGINT}
+	</update>
+    <update id="updateByTest">
+        UPDATE test
+        <set>
+            <if test="unit != null">
+                unit = #{unit},
+            </if>
+        </set>
+        WHERE  user_id = #{userId} AND id = #{id}
+    </update>
+
+</mapper>

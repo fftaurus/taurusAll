@@ -1,0 +1,41 @@
+server:
+  port: 9708
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: org.gjt.mm.mysql.Driver
+    url: jdbc:mysql://127.0.0.1:3306/sql_test?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    username: root
+    password: root
+    test-while-idle: true
+    validation-query: SELECT 1
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password:
+    jedis:
+      pool:
+        # 最大连接数
+        max-active: 8
+        # 最大阻塞等待时间(-负数无限制)
+        max-wait: -1
+        # 最小空闲
+        min-idle: 0
+    # 连接超时时间
+    timeout: 5000
+mybatis-plus:
+  mapper-locations: mapper/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+#logging:
+#  level:
+#    org.springframework.web: trace
+logging:
+  file:
+    path: D:\code\log
+    name: taurus
+
+
+
+#    org.springframework.web.servlet.DispatcherServlet: trace
